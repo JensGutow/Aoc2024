@@ -21,6 +21,6 @@ def solve(puzzle):
 
     return part1, part2
     
-puzzle = read_puzzle('d1.txt')
+puzzle = read_puzzle('d01.txt')
 
 print("Task 1/2", solve(puzzle))
