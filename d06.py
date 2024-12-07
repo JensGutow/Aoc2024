@@ -4,15 +4,13 @@ def read_puzzle(file):
     d = dict()
     start_pos = None
     text = open(file).read().splitlines()
-    free_positions = set()
     for y, line in enumerate(text):
         for x, c in enumerate(line):
             d[(x,y)] = c
-            if c == ".": free_positions.add((x,y))
-            elif c == "^" : 
+            if c == "^" : 
                 start_pos = (x,y)
                 d[(x,y)] = "."
-    return free_positions, start_pos, d
+    return  start_pos, d
 
 def addDir(l1, l2):
     return (l1[0]+l2[0], l1[1]+l2[1])
@@ -33,13 +31,13 @@ def findPath(pos:list, d:dict):
         if (loop_detected := (pos, dir) in loop_detector):
             break
         loop_detector.add((pos,dir))
-    return loop_detected, len(locations)
+    return loop_detected, locations
     
-def solve(free_positions:set, pos:list, d:dict):
-    _, part1 = findPath(pos, d)
+def solve(pos:list, d:dict):
+    _, locations = findPath(pos, d)
+    part1 = len(locations)
     part2 = 0
-    print(f"Number of free positions: {len(free_positions)}")
-    for i, free_pos in enumerate(free_positions):
+    for i, free_pos in enumerate(locations.difference(set(pos))):
         d[free_pos] = "#"
         if(i%1000 == 0): print(f"step:{i}")
         part2 += findPath(pos, d)[0]
